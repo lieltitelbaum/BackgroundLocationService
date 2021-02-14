@@ -23,6 +23,11 @@ class MyLocation: Hashable {
         self.longitude = longitude
     }
     
+    init(dictionary:[String:Any]) {
+        self.latitude = dictionary[Constants.keys.latitudeKey] as? String ?? ""
+        self.longitude = dictionary[Constants.keys.longitudeKey] as? String ?? ""
+    }
+    
     static func == (lhs: MyLocation, rhs: MyLocation) -> Bool {
         return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
     }
@@ -44,5 +49,14 @@ class MyLocation: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(latitude)
         hasher.combine(longitude)
+    }
+    
+    func convertToDict() -> [String:Any] {
+        var dict:[String:Any] = [:]
+        
+        dict[Constants.keys.latitudeKey] = self.latitude
+        dict[Constants.keys.longitudeKey] = self.longitude
+        
+        return dict
     }
 }

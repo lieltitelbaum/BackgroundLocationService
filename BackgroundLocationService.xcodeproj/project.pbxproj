@@ -23,6 +23,8 @@
 		BBE2F0BE25B9A23300C1A9C8 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE2F0BD25B9A23300C1A9C8 /* Models.swift */; };
 		BBE2F0C725B9ACBF00C1A9C8 /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE2F0C625B9ACBF00C1A9C8 /* FirebaseHelper.swift */; };
 		BBE2F0CF25B9B01600C1A9C8 /* Constants .swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE2F0CE25B9B01600C1A9C8 /* Constants .swift */; };
+		BBFCD46A25BCCF7F0010DE07 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFCD46925BCCF7F0010DE07 /* LogInViewController.swift */; };
+		BBFCD46F25BCD0C30010DE07 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFCD46E25BCD0C30010DE07 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		BBE2F0BD25B9A23300C1A9C8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		BBE2F0C625B9ACBF00C1A9C8 /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
 		BBE2F0CE25B9B01600C1A9C8 /* Constants .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants .swift"; sourceTree = "<group>"; };
+		BBFCD46925BCCF7F0010DE07 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		BBFCD46E25BCD0C30010DE07 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CD443702BFC881743975DDE4 /* Pods_BackgroundLocationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BackgroundLocationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3BDA0957C39BE0FC62C4A1E /* Pods-BackgroundLocationServiceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BackgroundLocationServiceTests.debug.xcconfig"; path = "Target Support Files/Pods-BackgroundLocationServiceTests/Pods-BackgroundLocationServiceTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				BB9F599625B8642D00561FBB /* HomeViewController.swift */,
+				BBFCD46925BCCF7F0010DE07 /* LogInViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 			children = (
 				BBE2F0B325B9A17C00C1A9C8 /* Utils.swift */,
 				BBE2F0CE25B9B01600C1A9C8 /* Constants .swift */,
+				BBFCD46E25BCD0C30010DE07 /* Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -455,9 +461,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBE2F0B425B9A17C00C1A9C8 /* Utils.swift in Sources */,
+				BBFCD46F25BCD0C30010DE07 /* Extensions.swift in Sources */,
 				BB9F599725B8642D00561FBB /* HomeViewController.swift in Sources */,
 				BB9F599325B8642D00561FBB /* AppDelegate.swift in Sources */,
 				BB9F599525B8642D00561FBB /* SceneDelegate.swift in Sources */,
+				BBFCD46A25BCCF7F0010DE07 /* LogInViewController.swift in Sources */,
 				BBE2F0CF25B9B01600C1A9C8 /* Constants .swift in Sources */,
 				BBE2F0C725B9ACBF00C1A9C8 /* FirebaseHelper.swift in Sources */,
 				BBE2F0BE25B9A23300C1A9C8 /* Models.swift in Sources */,

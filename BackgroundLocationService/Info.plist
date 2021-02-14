@@ -70,5 +70,7 @@
 	<string>This apps keep track on your location, please enable location permissions</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This apps keep track on your location, please enable location permissions</string>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+	<string>NO</string>
 </dict>
 </plist>
