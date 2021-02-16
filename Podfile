@@ -11,6 +11,7 @@ pod 'Firebase/Auth'
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
 pod 'Firebase/Storage'
+pod 'NVActivityIndicatorView'
 
   target 'BackgroundLocationServiceTests' do
     inherit! :search_paths

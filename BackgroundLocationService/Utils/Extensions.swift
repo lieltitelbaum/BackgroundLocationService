@@ -33,8 +33,28 @@ extension UIViewController {
     
     func mostTopViewController() -> UIViewController {
         guard let topController = self.presentedViewController else { return self }
-
+        
         return topController.mostTopViewController()
+    }
+}
+
+extension UIWindow {
+    var visibleViewController: UIViewController? {
+        return UIWindow.getVisibleViewControllerFrom(self.rootViewController)
+    }
+    
+    static func getVisibleViewControllerFrom(_ vc: UIViewController?) -> UIViewController? {
+        if let nc = vc as? UINavigationController {
+            return UIWindow.getVisibleViewControllerFrom(nc.visibleViewController)
+        } else if let tc = vc as? UITabBarController {
+            return UIWindow.getVisibleViewControllerFrom(tc.selectedViewController)
+        } else {
+            if let pvc = vc?.presentedViewController {
+                return UIWindow.getVisibleViewControllerFrom(pvc)
+            } else {
+                return vc
+            }
+        }
     }
 }
 
@@ -42,6 +62,55 @@ extension UIApplication {
     static func mostTopViewController() -> UIViewController? {
         guard let topController = UIApplication.shared.keyWindow?.rootViewController else { return nil }
         return topController.mostTopViewController()
+    }
+}
+
+extension UIColor {
+    public convenience init?(hex hexa: String) {
+        let r, g, b: CGFloat
+        
+        var hex = hexa.replacingOccurrences(of: "0x", with: "#")
+        if !hex.starts(with: "#") {
+            hex = "#\(hex)"
+        }
+        
+        guard hex.hasPrefix("#") else { return nil }
+        guard hex.count == 6 + 1 else { return nil }
+        
+        let start = hex.index(hex.startIndex, offsetBy: 1)
+        let hexColor = String(hex[start...])
+        
+        if hexColor.count == 6 {
+            let scanner = Scanner(string: hexColor)
+            var hexNumber: UInt64 = 0
+            
+            if scanner.scanHexInt64(&hexNumber) {
+                r = CGFloat((hexNumber & 0xff0000) >> 16) / 255
+                g = CGFloat((hexNumber & 0x00ff00) >> 8) / 255
+                b = CGFloat((hexNumber & 0x0000ff)) / 255
+                
+                self.init(red: r, green: g, blue: b, alpha: 1)
+                return
+            }
+        }
+        
+        return nil
+    }
+}
+
+extension UIView {
+    /**
+     Set the corner radius of the view.
+     
+     - Parameter color:        The color of the border.
+     - Parameter cornerRadius: The radius of the rounded corner.
+     - Parameter borderWidth:  The width of the border.
+     */
+    open func setCornerBorder(color: UIColor? = nil, cornerRadius: CGFloat = 15.0, borderWidth: CGFloat = 1.5) {
+        self.layer.borderColor = color != nil ? color!.cgColor : UIColor.clear.cgColor
+        self.layer.borderWidth = borderWidth
+        self.layer.cornerRadius = cornerRadius
+        self.clipsToBounds = true
     }
 }
 
@@ -55,9 +124,9 @@ extension UIAlertController {
     @discardableResult
     func show(completion: (() -> Swift.Void)? = nil) -> UIAlertController? {
         guard let mostTopViewController = UIApplication.mostTopViewController() else { print("Failed to present alert [title: \(String(describing: self.title)), message: \(String(describing: self.message))]"); return nil }
-
+        
         mostTopViewController.present(self, animated: true, completion: completion)
-
+        
         return self
     }
     

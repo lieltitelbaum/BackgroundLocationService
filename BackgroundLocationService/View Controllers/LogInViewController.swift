@@ -16,23 +16,46 @@ class LogInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Utils.setFontLbl(lbl: welcomeLbl)
-        Utils.setFontLbl(lbl: logInBtn.titleLabel)
+        logInBtn.setCornerBorder()
         
+        if self.traitCollection.userInterfaceStyle == .dark {
+            self.view.backgroundColor = UIColor.black
+            welcomeLbl.textColor = UIColor.white
+        }
+        else {
+            self.view.backgroundColor = UIColor.white
+            welcomeLbl.textColor = UIColor.black
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.view.backgroundColor = UIColor.white
+        welcomeLbl.textColor = UIColor.black
         
     }
     
-    @IBAction func annonymousBtnTapped(_ sender: Any) {
-  
+    @IBAction func annonymousBtnTapped(_ sender: UIButton) {
+        
+        Utils.showLoader(show: true)
+        if let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first {
+            if window.rootViewController != self
+            {
+                Utils.setupRootVC(window: window)
+                print("root view controller is not login vc")
+            }
+        }
+        
         if !FirebaseHelper.isUserLoggedIn {
-            Auth.auth().signInAnonymously {[weak self] (result, error) in
-                print("error in login \(String(describing: error))")
+            Auth.auth().signInAnonymously { (result, error) in
+                Utils.showLoader(show: true)
                 if error != nil {
-                    self?.showAlert(title: "Something went wrong", message: "Erroe signing in")
+                    print("error in login \(String(describing: error))")
+                    self.showAlert(title: "Something went wrong", message: "Erroe signing in")
+                    Utils.showLoader(show: false)
                 }
                 else {
                     print("user is logged in with uid = \(String(describing: FirebaseHelper.uid))")
-                    self?.goToHomeVc()
+                    self.goToHomeVc()
                 }
             }
         }
@@ -42,8 +65,24 @@ class LogInViewController: UIViewController {
     }
     
     private func goToHomeVc() {
-        let homeVc = HomeViewController.instantiate(storyboardName: Constants.mainStoryboard, identifier: Constants.homeVcId)
-        self.navigationController?.pushViewController(homeVc, animated: true)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "homeVc") as? HomeViewController {
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+            else {
+                print("eror in navigation controller")
+            }
+        }
+        
+        
+//        let homeVc = HomeViewController.instantiate(storyboardName: Constants.mainStoryboard, identifier: Constants.homeVcId)
+//        if let navigationController = self.navigationController {
+//            navigationController.pushViewController(homeVc, animated: true)
+//            Utils.showLoader(show: false)
+//        }
+//        else{
+//            print("navigation controller is nil")
+//        }
     }
     
 }

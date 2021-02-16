@@ -18,27 +18,16 @@ class HomeViewController: UIViewController {
     var isLocationUpdatingOn: Bool = false
     var currentLocation: MyLocation?
     
-//    var currentLocation: MyLocation? {
-//        guard let locationCord = locationManager.location?.coordinate else {return nil}
-//        return MyLocation(latitude: locationCord.latitude.description, longitude: locationCord.longitude.description)
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        Utils.shared.locationManager.requestAlwaysAuthorization()
-//        locationManager?.allowsBackgroundLocationUpdates = true
+        
         locationManager.requestAlwaysAuthorization()
-        setupLocation()
-//        locationManager.delegate = self
-//        locationManager.allowsBackgroundLocationUpdates = true
 
-    }
-    
-    private func setFonts() {
-        Utils.setFontLbl(lbl: enablePermissionsLbl)
-        Utils.setFontLbl(lbl: stopBtn.titleLabel)
-        Utils.setFontLbl(lbl: startBtn.titleLabel)
-        Utils.setFontLbl(lbl: logOutBtn.titleLabel)
+        startBtn.setCornerBorder()
+        stopBtn.setCornerBorder()
+        
+        setupLocation()
+        
     }
     
     private func setupLocation() {
@@ -46,11 +35,11 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.activityType = .otherNavigation
-        locationManager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter)
+        //                locationManager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter)
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -60,24 +49,35 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        if !Utils.hasLocationAccess() {
-//            Utils.tellUserTogoToSettings()
-//            setLocationUpdate(start: false)
-//        }
-//        else {
-//            setLocationUpdate(start: true)
-//        }
+        Utils.hasLocationAccess(manager: locationManager) { (ans) in
+            self.setLocationUpdate(start: ans)
+        }
     }
     
     @IBAction func startBtnTapped(_ sender: Any) {
-        setLocationUpdate(start: true)
+        Utils.hasLocationAccess(manager: locationManager) {[weak self] (access) in
+            if access {
+                self?.setLocationUpdate(start: true)
+            }
+            else {
+                print("Does not have location access")
+                self?.setLocationUpdate(start: false)
+            }
+        }
     }
     
-    @IBAction func logOutTapped(_ sender: Any) {
-        FirebaseHelper.logOut { (_ ) in
-            let loginVc = LogInViewController.instantiate(identifier: Constants.loginVcId)
-//            self.navigationController?.pushViewController(loginVc, animated: true)
-            self.navigationController?.popToViewController(loginVc, animated: true)
+    @IBAction func logOutTapped(_ sender: UIButton) {
+        FirebaseHelper.logOut {[weak self] (success) in
+            if success {
+                if let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first {
+                    Utils.setupRootVC(window: window)
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }
+                else {
+                    print("Failed getting window")
+                    return
+                }
+            }
         }
     }
     
@@ -100,10 +100,13 @@ extension HomeViewController: CLLocationManagerDelegate {
         else if status == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         }
+        else if status == .authorizedWhenInUse {
+            print("user chose authorizedWhenInUse")
+            locationManager.requestAlwaysAuthorization()
+        }
         else {
             setLocationUpdate(start: false)
-            locationManager.requestAlwaysAuthorization()
-//            Utils.tellUserTogoToSettings()
+            Utils.tellUserTogoToSettings()
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -111,23 +114,19 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus{
-        case .authorizedAlways:
-            setLocationUpdate(start: true)
-        case .notDetermined:
-            manager.requestAlwaysAuthorization()
-        case .authorizedWhenInUse:
-            locationManager.requestAlwaysAuthorization()
-            setLocationUpdate(start: true)
-//            Utils.tellUserTogoToSettings(msg: "Please change location permission to always")
-        default:
-            Utils.tellUserTogoToSettings()
-            setLocationUpdate(start: false)
+        Utils.hasLocationAccess(manager: locationManager) { (access) in
+            self.setLocationUpdate(start: access)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        manager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter) //20 meters
+        //        manager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter) //20 meters
+        locationManager.requestAlwaysAuthorization()
+
+        if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestAlwaysAuthorization()
+        }
+        
         
         if let location = locations.last {
             print("New location is \(location)")

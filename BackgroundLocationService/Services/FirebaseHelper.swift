@@ -30,8 +30,8 @@ class FirebaseHelper {
         do {
             try Auth.auth().signOut()
             completion(true)
-        } catch {
-            print("Could not sign out user")
+        } catch let signOutError as NSError{
+            print("Could not sign out user \(signOutError)")
             completion(false)
         }
     }

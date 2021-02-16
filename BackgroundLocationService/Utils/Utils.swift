@@ -7,45 +7,33 @@
 
 import Foundation
 import UIKit
-//import OnGestureSwift
 import CoreLocation
-//import SDWebImage
 import FirebaseFirestore
+import NVActivityIndicatorView
 
 class Utils {
     
     static let shared: Utils = Utils()
-    let locationManager: CLLocationManager
+    public typealias CallbackClosure<T> = ((T) -> Void)
+    static let loader:NVActivityIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0, width: 50, height: 50), type: .ballSpinFadeLoader, color:Constants.design.continueLoginColor, padding: nil)
     
-    private init() {
-        locationManager = CLLocationManager()
-    }
-    static func getLocation() -> MyLocation? {
-        //        if let coordinate = HomeViewController.shared?.userLocationOnMap {
-        //            return MiniMapLocation(latitude: "\(coordinate.latitude)", longitude: "\(coordinate.longitude)")
-        //        }
-        //
-        //        return nil
-        if CLLocationManager.authorizationStatus() == .authorizedAlways {
-            if let currentLoc = shared.locationManager.location {
-                return MyLocation(latitude: "\(currentLoc.coordinate.latitude)", longitude: "\(currentLoc.coordinate.longitude)")
-            }
-        }
-        
-        return nil
-    }
     
-    static func hasLocationAccess()->Bool {
+    static func hasLocationAccess(manager: CLLocationManager, completion: @escaping CallbackClosure<Bool>) {
         
         if (CLLocationManager.locationServicesEnabled()) {
             
-            if ([CLAuthorizationStatus.authorizedAlways].contains(CLLocationManager.authorizationStatus() )) {
-                return true
-            } else {
-                return false
+            switch manager.authorizationStatus {
+            case .authorizedAlways:
+                completion(true)
+            case .notDetermined:
+                manager.requestAlwaysAuthorization()
+            case .authorizedWhenInUse:
+                tellUserTogoToSettings(msg: Constants.Strings.changePermissionsMsg)
+            default:
+                tellUserTogoToSettings()
+                completion(false)
             }
         }
-        return false
     }
     
     @discardableResult
@@ -72,23 +60,42 @@ class Utils {
         .show()
     }
     
+    static func showLoader(show:Bool){
+        var window:UIWindow?
+        if #available(iOS 13.0, *){
+            if let sceneWindow = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window {
+                window = sceneWindow
+            }
+        }else {
+            if let appD = (UIApplication.shared.delegate as? AppDelegate)?.window {
+                window = appD
+            }
+        }
+        if show {
+            window?.addSubview(loader)
+            loader.frame = CGRect(x: (window?.frame.size.width  ?? 0)/2 - 25, y: (window?.frame.height ?? 0)/2 - 25, width: 50, height: 50)
+            loader.startAnimating()
+        }else {
+            loader.stopAnimating()
+            loader.removeFromSuperview()
+        }
+        
+    }
+
     
     static func setupRootVC(window: UIWindow) {
         if !FirebaseHelper.isUserLoggedIn {
             let vc = UIStoryboard(name: Constants.mainStoryboard, bundle: nil).instantiateViewController(withIdentifier: Constants.loginVcId)
             window.rootViewController = vc
             window.makeKeyAndVisible()
+            print("Set LoginVc to root vc")
         }
         else {
             let vc = UIStoryboard(name: Constants.mainStoryboard, bundle: nil).instantiateViewController(withIdentifier: Constants.homeVcId)
             window.rootViewController = vc
             window.makeKeyAndVisible()
+            print("Set homeVc to root vc")
         }
-    }
-    
-    static func setFontLbl(lbl: UILabel?) {
-        guard let lbl = lbl else {return}
-        lbl.font = Constants.design.primaryFont
     }
     
 }

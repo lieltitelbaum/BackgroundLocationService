@@ -17,20 +17,20 @@ class Constants {
     
     struct Strings {
         static let stringMsg: String = "Please go to settings and allow this app to access your location."
-    }
-    
-    struct design {
-        static let primaryFont: UIFont = UIFont(name: "ProximaNova-Bold", size: 18) ?? UIFont()
+        static let changePermissionsMsg: String = "Please change location permission to always"
     }
     
     struct keys {
         static let longitudeKey = "longitude"
         static let latitudeKey = "latitude"
-
+    }
+    
+    struct design {
+        static let continueLoginColor = UIColor(hex :"#00ADFF") ?? UIColor.white
     }
     
     static let mainStoryboard = "Main"
     static let homeVcId = "homeVc"
     static let loginVcId = "loginVc"
-    static let meterDistanceFilter = 20 //20 meters
+    static let meterDistanceFilter = 20.0 //20 meters
 }
