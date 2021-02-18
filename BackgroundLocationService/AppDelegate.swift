@@ -24,10 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         if #available(iOS 13, *){
-            
         } else {
             if let win = window {
-                Utils.setupRootVC(window: win)
+                Utils.setupRootViewController(window: win)
             }
         }
         

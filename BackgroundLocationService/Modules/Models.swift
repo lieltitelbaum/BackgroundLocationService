@@ -8,15 +8,10 @@
 import Foundation
 import CoreLocation
 
-class MyLocation: Hashable {
+class MyLocation {
     
     var latitude: String
     var longitude: String
-    
-    enum CodingKeys: String, CodingKey {
-        case latitude
-        case longitude
-    }
     
     init(latitude: String, longitude: String) {
         self.latitude = latitude
@@ -28,27 +23,10 @@ class MyLocation: Hashable {
         self.longitude = dictionary[Constants.keys.longitudeKey] as? String ?? ""
     }
     
-    static func == (lhs: MyLocation, rhs: MyLocation) -> Bool {
-        return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
-    }
-    
-//    convenience init?(dict: RawJsonFormat?) {
-//        guard let lat = dict?["latitude"] as? String,let long = dict?["longitude"] as? String else {
-//            return nil
-//        }
-//
-//        self.init(latitude:lat,longitude:long)
-//    }
-    
     func getCLLocation() -> CLLocation? {
         guard let latitude = Double(latitude), let longitude = Double(longitude) else { return nil }
         
         return CLLocation(latitude: latitude, longitude: longitude)
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(latitude)
-        hasher.combine(longitude)
     }
     
     func convertToDict() -> [String:Any] {

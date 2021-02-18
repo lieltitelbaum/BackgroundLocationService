@@ -11,13 +11,19 @@ import UIKit
 class Constants {
     
     struct firebasePaths {
-        static let fireStoreLocationCollection = "usersLocation"
         static let fireStoreUsers = "users"
     }
     
     struct Strings {
         static let stringMsg: String = "Please go to settings and allow this app to access your location."
         static let changePermissionsMsg: String = "Please change location permission to always"
+        static let logOutMsgTitle: String = "Couldn't sign out"
+        static let logOutMsgBody = "Sorry, there is a problem signing you out"
+        static let stopLocationTitle = "Are you sure?"
+        static let stopLocationMsg = "don't stop and go, stay with us!"
+        static let okStr = "OK"
+        static let yesStr = "Yes"
+        static let nopeStr = "Nope"
     }
     
     struct keys {
@@ -26,7 +32,7 @@ class Constants {
     }
     
     struct design {
-        static let continueLoginColor = UIColor(hex :"#00ADFF") ?? UIColor.white
+        static let loadingAnimColor = UIColor(hex : "#EDBACC") ?? UIColor.systemPink
     }
     
     static let mainStoryboard = "Main"

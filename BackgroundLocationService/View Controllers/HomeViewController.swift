@@ -11,9 +11,9 @@ import CoreLocation
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var logOutBtn: UIButton!
-    @IBOutlet weak var enablePermissionsLbl: UILabel!
     @IBOutlet weak var startBtn: UIButton!
     @IBOutlet weak var stopBtn: UIButton!
+    
     lazy var locationManager: CLLocationManager = CLLocationManager()
     var isLocationUpdatingOn: Bool = false
     var currentLocation: MyLocation?
@@ -21,23 +21,21 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.requestAlwaysAuthorization()
-
-        startBtn.setCornerBorder()
-        stopBtn.setCornerBorder()
-        
         setupLocation()
-        
+        startBtn.roundCorners()
+        stopBtn.roundCorners()
+        self.hideNav()
     }
     
     private func setupLocation() {
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.requestAlwaysAuthorization()
         locationManager.activityType = .otherNavigation
-        //                locationManager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter)
+        locationManager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter)
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.startUpdatingLocation()
+//        locationManager.startUpdatingLocation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,13 +47,13 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Utils.hasLocationAccess(manager: locationManager) { (ans) in
-            self.setLocationUpdate(start: ans)
+        Utils.hasLocationAccess(vc: self, manager: locationManager) {[weak self] (ans) in
+            self?.setLocationUpdate(start: ans)
         }
     }
     
     @IBAction func startBtnTapped(_ sender: Any) {
-        Utils.hasLocationAccess(manager: locationManager) {[weak self] (access) in
+        Utils.hasLocationAccess(vc: self, manager: locationManager) {[weak self] (access) in
             if access {
                 self?.setLocationUpdate(start: true)
             }
@@ -70,13 +68,17 @@ class HomeViewController: UIViewController {
         FirebaseHelper.logOut {[weak self] (success) in
             if success {
                 if let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first {
-                    Utils.setupRootVC(window: window)
+                    Utils.setupRootViewController(window: window)
                     self?.navigationController?.popToRootViewController(animated: true)
                 }
                 else {
                     print("Failed getting window")
                     return
                 }
+            }
+            else {
+                guard let strongSelf = self else {return}
+                UIAlertController.createOkAlert(vc: strongSelf, title: Constants.Strings.logOutMsgTitle, msg: Constants.Strings.logOutMsgBody)
             }
         }
     }
@@ -86,7 +88,12 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func stopBtnTapped(_ sender: Any) {
-        setLocationUpdate(start: false)
+        let alert = UIAlertController(title: Constants.Strings.stopLocationTitle, message: Constants.Strings.stopLocationMsg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.Strings.yesStr, style: .default, handler: {[weak self] (_) in
+            self?.setLocationUpdate(start: false)
+        }))
+        alert.addAction(UIAlertAction(title: Constants.Strings.nopeStr, style: .cancel, handler: nil))
+        self.present(alert, animated: true)
     }
 }
 
@@ -106,7 +113,7 @@ extension HomeViewController: CLLocationManagerDelegate {
         }
         else {
             setLocationUpdate(start: false)
-            Utils.tellUserTogoToSettings()
+            Utils.tellUserTogoToSettings(vc: self)
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -114,7 +121,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        Utils.hasLocationAccess(manager: locationManager) { (access) in
+        Utils.hasLocationAccess(vc: self, manager: locationManager) { (access) in
             self.setLocationUpdate(start: access)
         }
     }
@@ -122,11 +129,10 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        manager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter) //20 meters
         locationManager.requestAlwaysAuthorization()
-
+        
         if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         }
-        
         
         if let location = locations.last {
             print("New location is \(location)")

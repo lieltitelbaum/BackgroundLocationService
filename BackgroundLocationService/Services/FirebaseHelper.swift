@@ -17,7 +17,7 @@ class FirebaseHelper {
     
     static let db = Firestore.firestore()
     public typealias CallbackClosure<T> = ((T) -> Void)
-
+    
     static var uid: String? {
         return Auth.auth().currentUser?.uid
     }
@@ -42,7 +42,7 @@ class FirebaseHelper {
             completion(false)
             return
         }
-                
+        
         db.collection(Constants.firebasePaths.fireStoreUsers).document(uid).setData(locationDict) { (err) in
             //if doc is not exist, it will create new one and if it does exist, it will overwrite the current value
             if let _ = err {
@@ -52,25 +52,6 @@ class FirebaseHelper {
                 completion(true)
             }
         }
-
-//
-//        db.collection("users").document(uid).getDocument { (snapDoc, error) in
-//            if let locationData = snapDoc?.data() {
-//               //update doc
-//
-//            }
-//            else {
-//                //create new doc
-//                db.collection("users").document("notifications").collection(id).document("settings").setData(dict) { err in
-//                    completion(err == nil)
-//                }
-//            }
-//
-//
-//
-////            if let val = locationData?.[Constants.]
-//        }
-    
     }
     
     
