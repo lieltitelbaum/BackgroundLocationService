@@ -18,5 +18,36 @@ pod 'Firebase/Storage'
 pod 'NVActivityIndicatorView'
 ```
 
+###Log in in dark mode:
+<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9585.PNG"
+width="210">
+
+###Log in:<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9589.PNG" 
+width="210">
+
+###Log in after user pressed login -> animation is showing:<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9586.PNG" 
+width="210">
+
+###Home page:<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9588.PNG" 
+width="210">
+
+###Home page in dark mode:<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9587.PNG"
+width="210">
+
+###First prompt shows up:<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9590.PNG" 
+width="210">
+
+###Second prompt shows up:<br/><br/>
+<img src="https://github.com/lieltitelbaum/BackgroundLocationService/blob/main/IMG_9591.PNG" 
+width="210">
+
+
+
 #### Created by Liel Titelbaum
 
