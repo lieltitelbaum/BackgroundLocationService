@@ -1,4 +1,6 @@
 # Background Location Service iOS APP
+### Created by Liel Titelbaum
+
 This app keep track of your location in the backgorund within 20 meters (or above) distance range.<br/>
 In order to Choose ```always authoraztion```:<br/>
 - Choose in the first location permissions prompt ``Allow while using App`` 
@@ -49,5 +51,4 @@ width="210">
 
 
 
-### Created by Liel Titelbaum
 
