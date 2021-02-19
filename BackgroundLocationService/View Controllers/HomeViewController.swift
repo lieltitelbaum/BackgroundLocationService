@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var startBtn: UIButton!
     @IBOutlet weak var stopBtn: UIButton!
     
-    lazy var locationManager: CLLocationManager = CLLocationManager()
+    var locationManager: CLLocationManager = CLLocationManager()
     var isLocationUpdatingOn: Bool = false
     var currentLocation: MyLocation?
     
@@ -28,14 +28,14 @@ class HomeViewController: UIViewController {
     }
     
     private func setupLocation() {
-        locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.delegate = self
-        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.requestAlwaysAuthorization()
+        locationManager.allowsBackgroundLocationUpdates = true
         locationManager.activityType = .otherNavigation
         locationManager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter)
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingLocation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -128,7 +128,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        manager.distanceFilter = CLLocationDistance(Constants.meterDistanceFilter) //20 meters
-        locationManager.requestAlwaysAuthorization()
+//        locationManager.requestAlwaysAuthorization()
         
         if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()

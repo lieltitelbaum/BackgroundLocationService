@@ -22,7 +22,7 @@ class LogInViewController: UIViewController {
         super.viewDidLoad()
         
         logInBtn.isEnabled = true
-        loadingAnim.frame = CGRect(x: view.frame.width/2 - 30, y: logInBtn.frame.origin.y - 70, width: 50, height: 50)
+        loadingAnim.frame = CGRect(x: view.frame.width/2 - 30, y: logInBtn.frame.origin.y - logInBtn.frame.height - 80, width: 50, height: 50)
         
         self.view.addSubview(loadingAnim)
         logInBtn.roundCorners()

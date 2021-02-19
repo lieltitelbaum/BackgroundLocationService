@@ -27,7 +27,7 @@ class Utils {
         case .authorizedWhenInUse:
             manager.requestAlwaysAuthorization()
             print("Utils/ user chose authorizedWhenInUse")
-        //                tellUserTogoToSettings(vc: vc, msg: Constants.Strings.changePermissionsMsg)
+            tellUserTogoToSettings(vc: vc, title: "Please allow always location permission 📍", msg: Constants.Strings.changePermissionsMsg)
         default:
             tellUserTogoToSettings(vc: vc)
             completion(false)
@@ -50,8 +50,8 @@ class Utils {
     }
     
     
-    static func tellUserTogoToSettings(vc:UIViewController ,msg: String = Constants.Strings.stringMsg) {
-        let alert = UIAlertController(title: "Location is off 😥", message: msg, preferredStyle: .alert)
+    static func tellUserTogoToSettings(vc:UIViewController , title:String = "Location is off 😥",msg: String = Constants.Strings.stringMsg) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Take me to settings 🎉", style: .default, handler: { (_) in
             goToSettings()
