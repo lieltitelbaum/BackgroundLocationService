@@ -24,6 +24,12 @@ class Constants {
         static let okStr = "OK"
         static let yesStr = "Yes"
         static let nopeStr = "Nope"
+        static let switchToAlwaysPerm: String = "Please allow always location permission 📍"
+        static let takeMeToSettings:String = "Take me to settings 🎉"
+        static let stayHere:String = "I'll stay here"
+        static let locationIsOff:String = "Location is off 😥"
+        static let somethingWentWrong = "Something went wrong 😰"
+        static let errorLogIn = "We are sorry, we have trouble signing you in right now"
     }
     
     struct keys {

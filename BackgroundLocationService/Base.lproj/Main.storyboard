@@ -35,11 +35,11 @@
                                 <rect key="frame" x="21" y="114" width="372.5" height="32.5"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="25"/>
                                 <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
+                                <color key="highlightedColor" systemColor="quaternarySystemFillColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="GQZ-HF-bZ7"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="GQZ-HF-bZ7" firstAttribute="bottom" secondItem="1fz-TP-2J6" secondAttribute="bottom" constant="300" id="HRS-mo-RR8"/>
                             <constraint firstItem="1fz-TP-2J6" firstAttribute="centerX" secondItem="hyM-Ho-mNx" secondAttribute="centerX" id="ma3-3b-sJh"/>
@@ -137,6 +137,9 @@
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="quaternarySystemFillColor">
+            <color red="0.45490196078431372" green="0.45490196078431372" blue="0.50196078431372548" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

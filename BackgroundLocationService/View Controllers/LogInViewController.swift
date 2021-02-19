@@ -14,7 +14,6 @@ class LogInViewController: UIViewController {
     
     @IBOutlet weak var logInBtn: UIButton!
     @IBOutlet weak var welcomeLbl: UILabel!
-    var isDarkModeOn: Bool?
     let loadingAnim: NVActivityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), type: .ballBeat, color: Constants.design.loadingAnimColor, padding: nil)
     
     
@@ -27,32 +26,6 @@ class LogInViewController: UIViewController {
         self.view.addSubview(loadingAnim)
         logInBtn.roundCorners()
         self.hideNav()
-        handleDarkMode()
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        darkModeHelper()
-    }
-    
-    private func darkModeHelper() {
-        if isDarkModeOn == true {
-            self.view.backgroundColor = UIColor.black
-            welcomeLbl.textColor = UIColor.white
-        }
-        else {
-            self.view.backgroundColor = UIColor.white
-            welcomeLbl.textColor = UIColor.black
-        }
-    }
-    
-    private func handleDarkMode() {
-        if self.traitCollection.userInterfaceStyle == .dark {
-            isDarkModeOn = true
-        }
-        else {
-            isDarkModeOn = false
-        }
-        darkModeHelper()
     }
     
     @IBAction func annonymousBtnTapped(_ sender: UIButton) {
@@ -63,7 +36,7 @@ class LogInViewController: UIViewController {
             Auth.auth().signInAnonymously {[weak self] (result, error) in
                 if error != nil {
                     print("error in login \(String(describing: error))")
-                    UIAlertController.createOkAlert(vc: self ?? LogInViewController(), title: "Something went wrong", msg: "Erroe signing in")
+                    UIAlertController.createOkAlert(vc: self ?? LogInViewController(), title: Constants.Strings.somethingWentWrong, msg: Constants.Strings.errorLogIn)
                     self?.loadingAnim.stopAnimating()
                     sender.isEnabled = true
                 }
