@@ -15,10 +15,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var stopBtn: UIButton!
     
     var lastLocation: CLLocation?
-    
     private var locationManager: CLLocationManager = CLLocationManager()
     private var requestLocationAuthorizationCallback: ((CLAuthorizationStatus) -> Void)?
-    var isLocationUpdatingOn: Bool = false
     var currentLocation: MyLocation?
     
     override func viewDidLoad() {
